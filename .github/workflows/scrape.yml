@@ -1,0 +1,33 @@
+name: Scrape latest data
+
+on:
+  push:
+  workflow_dispatch:
+	# Set schedule if you want to run this periodically.
+  # schedule:
+  # - cron:  '6 9 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out this repo
+      uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - name: Fetch latest data
+      run: |-
+        bundle exec ruby scrape.rb
+    - name: Commit and push if it changed
+      run: |-
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add -A
+        timestamp=$(date -u)
+        git commit -m "Latest data: ${timestamp}" || exit 0
+        git push
