@@ -3,7 +3,7 @@ name: Scrape latest data
 on:
   push:
   workflow_dispatch:
-	# Set schedule if you want to run this periodically.
+  # Set schedule if you want to run this periodically.
   # schedule:
   # - cron:  '6 9 * * *'
 
